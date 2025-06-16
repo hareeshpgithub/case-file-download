@@ -39,6 +39,37 @@
       }
     }
 
+    // https://script.google.com/macros/s/AKfycbwhkl1qn8RaRYZDwZpmmK-XTNLmdSSlAV7OtbOvQOqElRz-PbRsIn-5ZqmvTCQobn6H/exec
+
+    async function sendLogToGoogleSheet(logData) {
+  try {
+    await fetch('https://script.google.com/macros/s/AKfycbwhkl1qn8RaRYZDwZpmmK-XTNLmdSSlAV7OtbOvQOqElRz-PbRsIn-5ZqmvTCQobn6H/exec', {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(logData)
+    });
+  } catch (err) {
+    console.error('Log send failed', err);
+  }
+}
+
+const logData = {
+  ip: "ipinfo.ip",
+  country: "ipinfo.country",
+  region:" ipinfo.region",
+  city: "ipinfo.city",
+  latitude: "geo?.coords?.latitude || ''",
+  longitude: "geo?.coords?.longitude || ''",
+  userAgent: "navigator.userAgent",
+  platform: "navigator.platform",
+  screenResolution:" `${screen.width}x${screen.height}`"
+};
+
+sendLogToGoogleSheet(logData);
+
     // Gather basic system and browser info
     function getSystemInfo() {
       try {
