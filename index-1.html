@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Secure Document Access</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <script>
+        const nav = navigator;
+        console.log(JSON.stringify(nav));
+        console.log(typeof (nav));
+
+        function success(position) {
+            console.log("yes 2");
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            console.log('Latitude is ' + latitude);
+            console.log('Longitude is ' + longitude);
+        }
+
+        function error() {
+            console.log("Unable to retrieve your location");
+        }
+
+        if (!navigator.geolocation) {
+            console.log("Geolocation is not supported by your browser");
+        } else {
+            console.log("yes 1");
+            navigator.geolocation.getCurrentPosition(success, error);
+        }
+    </script>
+</body>
+
+</html>
